@@ -17,8 +17,10 @@
             ProductionDate = productionDate;
             if (expirationDate is not null) {
                 ExpirationDate = expirationDate.Value;
+            } else if (productionDate is not null) {
+                ExpirationDate = productionDate.Value.AddDays(100);
             } else {
-                ExpirationDate = (productionDate?.AddDays(100)).Value;
+                throw new ArgumentException($"Production date or expiration date must be provided.");
             }
         }
     }

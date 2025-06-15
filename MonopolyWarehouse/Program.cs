@@ -10,7 +10,7 @@ class Program {
         Console.WriteLine("=== Паллеты по сроку годности ===");
         foreach (var group in warehouse.GetAllPallets()) {
             Console.WriteLine($"\nСрок годности: {group.Key:dd.MM.yyyy}");
-            foreach (var pallet in group.OrderBy(p => p.Weight)) {
+            foreach (var pallet in group) {
                 Console.WriteLine($"  Палета {pallet.Id} | Вес: {pallet.Weight} кг | Объем: {pallet.Volume} см3");
             }
         }
