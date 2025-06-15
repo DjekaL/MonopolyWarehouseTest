@@ -7,17 +7,36 @@
 
         protected override int GetNextId() => _id++;
 
-        public List<Box>? Boxes { get; set; } = new List<Box>();
+        private List<Box> _boxes = new List<Box>();
 
-        public override decimal Weight => Boxes.Sum(b => b.Weight) + _palletWeight;
+        public List<Box> Boxes {
+            get { return _boxes; }
+            private set { _boxes = value; }
+        }
 
-        public override DateOnly ExpirationDate => Boxes.Min(b => b.ExpirationDate);
+        public override decimal Weight => PalletsIsEmpty(Boxes) ? Boxes.Sum(b => b.Weight) + _palletWeight : _palletWeight;
 
-        public override decimal Volume => base.Volume + Boxes.Sum(b => b.Volume);
+        public override DateOnly ExpirationDate => PalletsIsEmpty(Boxes) ? Boxes.Min(b => b.ExpirationDate) : DateOnly.MinValue;
+
+        public override decimal Volume => PalletsIsEmpty(Boxes) ? base.Volume + Boxes.Sum(b => b.Volume) : base.Volume;
+
+        private bool PalletsIsEmpty(List<Box> boxes) {
+            return boxes.Any();
+        }
+
+        private bool CanAddBox(Box box) {
+            return box.Width <= Width && box.Depth <= Depth;
+        }
 
         public void AddBox(Box box) {
-            if (box.Width <= Width && box.Depth <= Depth) {
+            try {
+                if (!CanAddBox(box)) {
+                    throw new InvalidOperationException("Box exceeds pallet dimensions.");
+                }
                 Boxes.Add(box);
+            }
+            catch(InvalidOperationException ex) {
+                Console.WriteLine($"{ex}");
             }
         }
     }

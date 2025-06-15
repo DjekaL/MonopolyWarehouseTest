@@ -15,7 +15,7 @@ class Program {
             }
         }
 
-        Console.WriteLine("\n=== 3 паллеты с наибольшим сроком годности коробокb ===");
+        Console.WriteLine("\n=== 3 паллеты с наибольшим сроком годности коробоки ===");
         foreach (var pallet in warehouse.GetPalletsByBoxMaxExpiration(3)) {
             var maxDate = pallet.Boxes.Max(b => b.ExpirationDate);
             Console.WriteLine($"Палета {pallet.Id} | Макс. срок: {maxDate:dd.MM.yyyy} | Объем: {pallet.Volume} см3");

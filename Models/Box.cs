@@ -16,9 +16,9 @@
             Weight = weight;
             ProductionDate = productionDate;
             if (expirationDate is not null) {
-                ExpirationDate = (DateOnly)expirationDate;
+                ExpirationDate = expirationDate.Value;
             } else {
-                ExpirationDate = (DateOnly)(productionDate?.AddDays(100));
+                ExpirationDate = (productionDate?.AddDays(100)).Value;
             }
         }
     }
